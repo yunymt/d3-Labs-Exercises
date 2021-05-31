@@ -48,6 +48,9 @@ yAxis.append("text")
 
 // Line path generator
 // TODO: Implement the line generator
+var line = d3.line()
+    .x((d) => { return x(d.year); })
+    .y((d) => { return y(d.value); });
 
 d3.json("data/example.json").then((data) => {
     // Data cleaning
@@ -58,6 +61,8 @@ d3.json("data/example.json").then((data) => {
 
     // Set scale domains
     // TODO: set domain of axes
+    x.domain([d3.min(data, (d) => { return d.year; }), d3.max(data, (d) => { return d.year; })]);
+    y.domain([d3.min(data, (d) => { return d.value; }), d3.max(data, (d) => { return d.value; })]);
 
     // Generate axes once scales have been set
     xAxis.call(xAxisCall.scale(x))
@@ -65,6 +70,12 @@ d3.json("data/example.json").then((data) => {
 
     // Add line to chart
     // TODO: add line path
+    g.append("path")
+        .attr("class", "line")
+        .attr("fill", "gray")
+        .attr("stroke", "pink")
+        .attr("stroke-with", "3px")
+        .attr("d", line(data));
 
     /******************************** Tooltip Code ********************************/
 
